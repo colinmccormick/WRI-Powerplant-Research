@@ -7,7 +7,7 @@ The Global Powerplant Database project is working to build an open, global datab
 
 ### Fuel cost and generation ###
 
-Fuel cost is likely to be correlated to generation. Monthly fuel cost and generation data are available for (almost) all US powerplants from EIA, based on Form [EIA-923 data](https://www.eia.gov/electricity/data/eia923/). Unfortantely, these data are structured inconsistently, and need to be restructured and aggregated to allow comparison. This code is designed to do that.
+Generation is likely to be correlated to fuel cost. Monthly fuel cost and generation data are available for (almost) all US powerplants from EIA, based on Form [EIA-923 data](https://www.eia.gov/electricity/data/eia923/). Unfortunately, these data are structured inconsistently, and need to be restructured and aggregated to allow comparison. This code is designed to do that.
 
 We first obtained complete 2014 data from [EIA-923](https://www.eia.gov/electricity/data/eia923/). We then manually extracted column data about fuel costs from Page 5 (Fuel Receipts and Costs), keeping only the 'YEAR', 'MONTH', 'Plant Id', 'QUANTITY', and 'FUEL_COST' columns, and saved it in CSV format. We next did the same thing for column data about generation from Page 4 (Generator Data), keeping only the 'Plant Id', 'Generator ID', and monthly net generation columns, and saved it in CSV format.
 

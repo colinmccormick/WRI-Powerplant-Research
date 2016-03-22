@@ -11,12 +11,8 @@ A key challenge in powerplant data is estimating missing data, such as annual or
 
 Generation is likely to be correlated to fuel cost. Monthly fuel cost and generation data are available for (almost) all US powerplants from EIA, based on Form [EIA-923 data](https://www.eia.gov/electricity/data/eia923/). 
 
-Unfortunately, these data are structured inconsistently, and need to be restructured and aggregated to allow comparison. This code is designed to do that.
-
-To do this, we first obtain complete data for several years from [EIA-923](https://www.eia.gov/electricity/data/eia923/). We then manually export ‘Page 4’ (generation data) and ‘Page 5’ (fuel cost data) to two separate CSV files.
+Unfortunately, these data are structured inconsistently, and need to be restructured and aggregated to allow comparison. To do this, we first obtain complete data for several years from [EIA-923](https://www.eia.gov/electricity/data/eia923/). We then manually export ‘Page 4’ (generation data) and ‘Page 5’ (fuel cost data) to two separate CSV files.
 
 The script process_eia_data.py takes these two CSV files as parameters, reads them, and builds a dictionary of powerplant objects with the plant id as the key. Monthly generation and fuel cost data are read and saved to attributes on the appropriate powerplant object. 
 
-The script then outputs a CSV file with each powerplant as one row, and monthly fuel cost and generation data as columns.
-
-TODO: Extend to years before 2012.
+The script then outputs a CSV file with each powerplant as one row, and monthly fuel cost and generation data as columns. Currently, the script works for data back to 2009.

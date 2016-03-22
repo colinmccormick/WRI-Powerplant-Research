@@ -49,20 +49,24 @@ power_plant_dict = {}
 
 ### READ IN DATA FROM FUEL COST FILE ###
 # Data for each plant/generator/month combination are on a separate row.
+# EIA changes column names from year to year; so force to lower case and strip newlines
 
 with open(args.fuel_cost_file, 'rU') as csvfile:
 	datareader = csv.reader(csvfile)
-	headers = datareader.next()
+	raw_headers = datareader.next()
+	headers = [h.lower().replace("\n"," ") for h in raw_headers]	# make lower case, strip newlines
 
 	# skip leading rows with general information
-	while "Plant Id" not in headers:
-		headers = datareader.next()
+
+	while "plant id" not in headers:
+		raw_headers = datareader.next()
+		headers = [h.lower().replace("\n"," ") for h in raw_headers]	# make lower case, strip newlines
 
 	# identify columns
-	year_col = headers.index("YEAR")
-	month_col = headers.index("MONTH")
-	plant_id_col = headers.index("Plant Id")
-	fuel_cost_col = headers.index("FUEL_COST")
+	year_col = headers.index("year")
+	month_col = headers.index("month")
+	plant_id_col = headers.index("plant id")
+	fuel_cost_col = headers.index("fuel_cost")
 
 	# read columns
 	for row in datareader:
@@ -95,23 +99,28 @@ with open(args.fuel_cost_file, 'rU') as csvfile:
 ### READ IN DATA FROM GENERATION FILE ###
 # Note that this is structured differently than the fuel cost file, so read is different
 # Months are in separate columns on the same row, not individual rows
+# EIA changes column names from year to year; so force to lower case and strip newlines
 
-month_column_names = ["Net Generation January", "Net Generation February", "Net Generation March", "Net Generation April", "Net Generation May", "Net Generation June", "Net Generation July", "Net Generation August", "Net Generation September", "Net Generation October", "Net Generation November", "Net Generation December"]
+#month_column_names = ["Net Generation January", "Net Generation February", "Net Generation March", "Net Generation April", "Net Generation May", "Net Generation June", "Net Generation July", "Net Generation August", "Net Generation September", "Net Generation October", "Net Generation November", "Net Generation December"]
+
+month_column_names = ["net generation january", "net generation february", "net generation march", "net generation april", "net generation may", "net generation june", "net generation july", "net generation august", "net generation september", "net generation october", "net generation november", "net generation december"]
 
 month_column_indices = []
 
 with open(args.generation_file, 'rU') as csvfile:
 	datareader = csv.reader(csvfile)
-	headers = datareader.next()
+	raw_headers = datareader.next()
+	headers = [h.lower().replace("\n"," ") for h in raw_headers]	# make lower case, strip newlines
 
 	# skip leading rows with general information
-	while "Plant Id" not in headers:
-		headers = datareader.next()
+	while "plant id" not in headers:
+		raw_headers = datareader.next()
+		headers = [h.lower().replace("\n"," ") for h in raw_headers]	# make lower case, strip newlines
 
 	# identify columns
 	headers = [h.replace("\n"," ") for h in headers]	# strip newlines
-	year_col = headers.index("YEAR")
-	plant_id_col = headers.index("Plant Id")
+	year_col = headers.index("year")
+	plant_id_col = headers.index("plant id")
 	for month in month_column_names:
 		month_column_indices.append(headers.index(month))
 

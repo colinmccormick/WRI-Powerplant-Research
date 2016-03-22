@@ -6,6 +6,7 @@ Read EIA-derived CSV files with fuel cost and generation information and output 
 : param: fuel_cost_file: Filename of fuel cost data file
 : param: generation_file: Filename of generation data file
 : param: save_filename: Filename to save resulting database
+: param: year: Year of data being processed
 
 NOTES:
 
@@ -39,6 +40,8 @@ parser = argparse.ArgumentParser(description='Read EIA-derived CSV files and ext
 parser.add_argument('fuel_cost_file', type=str, help='CSV file with fuel costs.')
 parser.add_argument('generation_file', type=str, help='CSV file with generation data.')
 parser.add_argument('save_filename', type=str, help='Filename to save results.')
+parser.add_argument('year', type=str, help='Year of data being processed.')
+
 args = parser.parse_args()
 
 # create dictionary for power plant objects
@@ -93,7 +96,8 @@ with open(args.fuel_cost_file, 'rU') as csvfile:
 # Note that this is structured differently than the fuel cost file, so read is different
 # Months are in separate columns on the same row, not individual rows
 
-month_column_names = ["Net Generation\nJanuary", "Net Generation\nFebruary", "Net Generation\nMarch", "Net Generation\nApril", "Net Generation\nMay", "Net Generation\nJune", "Net Generation\nJuly", "Net Generation\nAugust", "Net Generation\nSeptember", "Net Generation\nOctober", "Net Generation\nNovember", "Net Generation\nDecember"]
+month_column_names = ["Net Generation January", "Net Generation February", "Net Generation March", "Net Generation April", "Net Generation May", "Net Generation June", "Net Generation July", "Net Generation August", "Net Generation September", "Net Generation October", "Net Generation November", "Net Generation December"]
+
 month_column_indices = []
 
 with open(args.generation_file, 'rU') as csvfile:
@@ -105,6 +109,7 @@ with open(args.generation_file, 'rU') as csvfile:
 		headers = datareader.next()
 
 	# identify columns
+	headers = [h.replace("\n"," ") for h in headers]	# strip newlines
 	year_col = headers.index("YEAR")
 	plant_id_col = headers.index("Plant Id")
 	for month in month_column_names:
@@ -147,7 +152,7 @@ print("Found {0} power plants".format(PowerPlant.plant_count))
 
 # build list of headers
 yyyy_mm_list = []
-for year in ['2014']:
+for year in [args.year]:
 	for month in range(1,13):		# remember range goes to one less than second param
 		yyyy_mm_list.append("{0}.{1}".format(year,str(month).zfill(2)))
 

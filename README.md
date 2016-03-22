@@ -15,4 +15,5 @@ Unfortunately, these data are structured inconsistently, and need to be restruct
 
 The script process_eia_data.py takes these two CSV files as parameters, reads them, and builds a dictionary of powerplant objects with the plant id as the key. Monthly generation and fuel cost data are read and saved to attributes on the appropriate powerplant object. 
 
-The script then outputs a CSV file with each powerplant as one row, and monthly fuel cost and generation data as columns. Currently, the script works for data back to 2009.
+The script then outputs a CSV file with each powerplant as one row, and monthly fuel cost and generation data as columns. Currently, the script works for data back to 2009, with the results saved in the EIA-data-processed directory.
+

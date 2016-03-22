@@ -41,23 +41,22 @@ parser.add_argument('fuel_cost_file', type=str, help='CSV file with fuel costs.'
 parser.add_argument('generation_file', type=str, help='CSV file with generation data.')
 parser.add_argument('save_filename', type=str, help='Filename to save results.')
 parser.add_argument('year', type=str, help='Year of data being processed.')
-
 args = parser.parse_args()
 
 # create dictionary for power plant objects
 power_plant_dict = {}
 
-### READ IN DATA FROM FUEL COST FILE ###
+######## READ IN DATA FROM FUEL COST FILE ############
 # Data for each plant/generator/month combination are on a separate row.
 # EIA changes column names from year to year; so force to lower case and strip newlines
+######################################################
 
 with open(args.fuel_cost_file, 'rU') as csvfile:
 	datareader = csv.reader(csvfile)
 	raw_headers = datareader.next()
 	headers = [h.lower().replace("\n"," ") for h in raw_headers]	# make lower case, strip newlines
 
-	# skip leading rows with general information
-
+	# skip leading rows that just have general information
 	while "plant id" not in headers:
 		raw_headers = datareader.next()
 		headers = [h.lower().replace("\n"," ") for h in raw_headers]	# make lower case, strip newlines
@@ -96,12 +95,11 @@ with open(args.fuel_cost_file, 'rU') as csvfile:
 		else:
 			plant_obj.monthly_fuel_cost[new_key] = fuel_cost
 
-### READ IN DATA FROM GENERATION FILE ###
+######## READ IN DATA FROM GENERATION FILE ############
 # Note that this is structured differently than the fuel cost file, so read is different
 # Months are in separate columns on the same row, not individual rows
 # EIA changes column names from year to year; so force to lower case and strip newlines
-
-#month_column_names = ["Net Generation January", "Net Generation February", "Net Generation March", "Net Generation April", "Net Generation May", "Net Generation June", "Net Generation July", "Net Generation August", "Net Generation September", "Net Generation October", "Net Generation November", "Net Generation December"]
+#######################################################
 
 month_column_names = ["net generation january", "net generation february", "net generation march", "net generation april", "net generation may", "net generation june", "net generation july", "net generation august", "net generation september", "net generation october", "net generation november", "net generation december"]
 
@@ -157,7 +155,7 @@ with open(args.generation_file, 'rU') as csvfile:
 # report number of power plants found
 print("Found {0} power plants".format(PowerPlant.plant_count))
 
-### OUTPUT ###
+############ OUTPUT ############
 
 # build list of headers
 yyyy_mm_list = []
@@ -197,5 +195,3 @@ with open(args.save_filename, 'w') as csvfile:
 				formatted_val = "0"
 			write_list.append(formatted_val)
 		datawriter.writerow(write_list)
-
-
